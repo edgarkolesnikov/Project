@@ -1,0 +1,119 @@
+@extends('layouts.app')
+
+@section('content')
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{$product->title}}</div>
+                    <div class="card-body">
+                        <div class="col-6">
+                            @foreach($images as $image)
+                                <img width="100%" src="{{URL::to($image->image)}}" class="card-img-top">
+                            @endforeach
+                        </div>
+                        <div class="col-6">
+                            <p>{{$product->content}}</p>
+                        </div>
+                        <ul>
+                            <li>{{$product->category->name}}</li>
+                            <li>{{$product->cloth->name}}</li>
+                            <li>{{$product->color->name}}</li>
+                            <li>{{$product->brand->name}}</li>
+                            <li>{{$product->size->name}}</li>
+                            <li>{{$product->material->name}}</li>
+                            <li>€{{$product->price}}</li>
+                        </ul>
+
+                        @if(Auth::id() != $product->user_id)
+                            <h4> Seller: <a
+                                    href="{{route('user.profile', $product->user->id)}}">{{$product->user->name}}</a>
+                            </h4>
+                        @endif
+
+                        @if(Auth::user())
+                            @if($product->user_id == Auth::id())
+                                <a class="btn btn-primary float-end" href="{{route('product.edit', $product->id)}}">Edit
+                                    post</a>
+                            @else
+                                <a class="btn btn-primary float-end"
+                                   href="{{route('messages.create', $product->user_id)}}">
+                                    Contact
+                                </a>
+                            @endif
+                        @endif
+                        @if(Auth::user())
+                            @if($product->user_id != Auth::id())
+                                @if($favoredProduct->isEmpty())
+                                    <form class="form" method="POST"
+                                          action="{{route('favouriteProduct', $product->id)}}">
+                                        @csrf
+                                        @method('GET')
+                                        <input type="submit" value="Favourite" class="btn btn-primary float-start">
+                                    </form>
+                                @else
+                                    <form class="form" method="POST"
+                                          action="{{route('unfavouriteProduct', $product->id)}}">
+                                        @csrf
+                                        @method('GET')
+                                        <input type="submit" value="Delete from watchlist"
+                                               class="btn btn-primary float-start">
+                                    </form>
+                                @endif
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center mt-100 mb-100">
+            <div class="col-lg-6">
+                <div class="card-body text-center">
+                    @if(Auth::user())
+                        <form class="form" method="post" action="{{ route('comments.store') }}">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                            <textarea class="text-center" cols="70%" name="comment" placeholder="Comment"></textarea>
+                            <input name="button" type="submit" class="btn btn-primary" value="Comment">
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center mt-100 mb-100">
+            <div class="col-lg-6">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Latest Comments</h4>
+                </div>
+                @foreach($comments as $comment)
+                    <div class="comment-widgets">
+                        <div class="d-flex flex-row comment-row m-t-0">
+                            <div class="comment-text w-100">
+                                <h6 class="font-medium"><h3>{{$comment->user->name}}</h3></h6>
+                                <span
+                                    class="m-b-15 d-block">{{$comment->content}}</span>
+                                <div class="comment-footer"><span
+                                        class="text-muted float-right">{{$comment->created_at}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if($comment->user_id == Auth::id())
+                        <form class="form" method="POST"
+                              action="{{route('comments.destroy', $comment->id)}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+
+
+                        </form>
+                    @endif
+                @endforeach
+
+            </div>
+        </div>
+
+
+@endsection

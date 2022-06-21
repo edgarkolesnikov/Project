@@ -1,0 +1,43 @@
+.received{
+    background-color: #a0aec0;
+    float: left;
+    clear:both;
+    padding: 10px;
+    border-radius: 20px;
+
+}
+
+.sent{
+    background-color: #eccccf;
+    float: right;
+    clear:both;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.table{
+    background: #eccccf;
+    overflow-x: auto;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+
+}
+
+tr:hover {
+    background-color: coral;
+}
+
+.text-center{
+    margin: 5px;
+    background-color: ghostwhite;
+}
+
+.w-100{
+    background-color: ghostwhite;
+    text-align: left;
+    margin: 5px;
+}
