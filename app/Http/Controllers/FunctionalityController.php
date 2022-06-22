@@ -23,9 +23,13 @@ class FunctionalityController extends Controller
     public function search(Request $request)
     {
         $search = $request->post('search');
+        if($search === null){
+            return Redirect::back();
+        }
         $products = products::where('title', 'LIKE', '%'. $search . '%')->
         orwhere('name', 'LIKE', '%'. $search . '%')->
-        orwhere('description', 'LIKE', '%'. $search . '%')->get();
+        orwhere('description', 'LIKE', '%'. $search . '%')->
+        orwhere('price', '<=', $search )->get();
         $images = [];
         foreach($products as $product){
             $photos = images::where('product_id', $product->id)->first();
@@ -70,7 +74,29 @@ class FunctionalityController extends Controller
         ]);
 
         return back()->with("status", "Password changed successfully!");
+    }
 
+    public function filteredProducts(Request $request)
+    {
+        $array = [
+            'category_id' => $request->post('category_id'),
+            'cloth_id' => $request->post('cloth_id'),
+            'size_id' => $request->post('size_id'),
+            'color_id' => $request->post('color_id'),
+        ];
+        $collection = array_filter($array);
+        foreach ($collection as $key => $atribute) {
+            if($atribute == null){
+                $data['products'] = products::select($key)->get();
+            }else {
+                $data['products'] = products::where($key, $atribute)->get();
+            }
+        }
+        if(empty($data['products'])){
+            return redirect()->route('home');
+        }
+        $data['images'] = images::all();
+        return view('search.filteredProducts', $data);
     }
 }
 

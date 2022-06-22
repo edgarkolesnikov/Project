@@ -30,7 +30,7 @@ class ProductsController extends Controller
     public function index()
     {
         $data['images'] = images::all();
-        $data['products'] = products::all();
+        $data['products'] = products::paginate(3);
         return view('product.list', $data);
     }
 
@@ -148,7 +148,7 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
         $products = products::where('id', $id)->get();
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $product->title = $request->post('title');
             $product->name = $request->post('name');
             $product->slug = Str::slug($product->title);
@@ -242,14 +242,15 @@ class ProductsController extends Controller
 
     public function deactivate(Request $request)
     {
-       $productsIds = $request->post('check');
-       if($productsIds != null) {
-           foreach ($productsIds as $productId) {
+        $productsIds = $request->post('check');
+        if ($productsIds != null) {
+            foreach ($productsIds as $productId) {
                 $product = products::find($productId);
                 $product->status_id = 2;
                 $product->save();
-           }
-       }
+            }
+        }
         return Redirect::back();
     }
+
 }

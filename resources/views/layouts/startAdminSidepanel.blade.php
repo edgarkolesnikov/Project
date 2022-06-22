@@ -17,9 +17,7 @@
 
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{route('admin.index')}}">User List</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{route('admin.products')}}">Product list</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{route('admin.comments')}}">Comments</a>
         </div>
     </div>
     <!-- Page content wrapper-->
-
-
-

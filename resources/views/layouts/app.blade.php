@@ -29,6 +29,8 @@
             <a class="navbar-brand" href="{{route('product.index')}}">
                 All Products
             </a>
+
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -37,15 +39,56 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav me-auto">
 
+
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Filters
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <form method="POST" action="{{route('filtered.products')}}">
+                                @csrf
+                            <select name="category_id">
+                                <option value="" selected disabled> Select Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @endforeach
+                            </select>
+
+                            <select name="cloth_id">
+                                <option value="" selected disabled> Select Cloth</option>
+                                @foreach($clothes as $cloth)
+                                    <option value="{{$cloth->id}}">{{$cloth->name}}</option>
+                                @endforeach
+                            </select>
+
+                            <select name="size_id">
+                                <option value="" selected disabled> Select size</option>
+                                @foreach($sizes as $size)
+                                    <option value="{{$size->id}}">{{$size->name}}</option>
+                                @endforeach
+                            </select>
+
+                                <select name="color_id">
+                                    <option value="" selected disabled> Select color</option>
+                                    @foreach($colors as $color)
+                                        <option value="{{$color->id}}">{{$color->name}}</option>
+                                    @endforeach
+                                </select>
+
+                            <input type="submit" class="btn btn-secondary" value="Filter">
+                            </form>
+                        </div>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->
 
-                    <form action="{{route('search.all')}}" method="post">
+                    <form action="{{route('search.all')}}" method="POST">
                         @csrf
                         <input type="text" name="search" placeholder="search">
                         <input type="submit" value="submit" name="submit" placeholder="submit">

@@ -8,8 +8,7 @@
                 <div class="col-lg-6">
                     <div class="about-text go-to">
                         <h3 class="dark-color">{{$user->name}}</h3>
-                        <h6 class="theme-color lead">Brand new cloths reseller in Lithuania</h6>
-                        <p> Custom text</p>
+
                         <div class="row about-list">
                             <div class="col-md-6">
 
@@ -50,25 +49,25 @@
             <div class="counter">
                 <div class="row">
                     <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
+                        <div class="count-data user-details">
                             <h6 class="count h2">{{$sold}}</h6>
                             <p class="m-0px font-w-600">Happy Clients</p>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
+                        <div class="count-data user-details">
                             <h6 class="count h2">{{$currently_selling}}</h6>
                             <p class="m-0px font-w-600">Curently selling</p>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
+                        <div class="count-data user-details">
                             <h6 class="count h2">{{$user->created_at->format('Y-m-d')}}</h6>
                             <p class="m-0px font-w-600">Selling since</p>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
+                        <div class="count-data user-details">
                             <h6 class="count h2">{{$rating}}</h6>
                             <p class="m-0px font-w-600">Rating</p>
                         </div>

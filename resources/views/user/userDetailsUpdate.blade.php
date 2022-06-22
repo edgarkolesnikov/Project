@@ -3,18 +3,19 @@
 @section('content')
     @include('layouts.startUserSidepanel')
     <div class="container">
+
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('User Details') }}</div>
-                    @if (\Session::has('success'))
-                        <div class="alert alert-success">
-                            <ul>
-                                <li>{!! \Session::get('success') !!}</li>
-                            </ul>
-                        </div>
-                    @endif
                     <div class="card-body">
+                        @if (\Session::has('success'))
+                            <div class="alert alert-success">
+                                <ul>
+                                    <li>{!! \Session::get('success') !!}</li>
+                                </ul>
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('userDetails.update', $user->id) }}">
                             @csrf
                             @method('PUT')

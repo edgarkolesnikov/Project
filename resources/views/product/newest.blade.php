@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Todays on trend</h2>
+    <div class="container">
+    <h2>Newest products</h2>
     <div class="row row-cols-1 row-cols-md-3">
         @foreach($products as $product)
             <div class="col-md-3">

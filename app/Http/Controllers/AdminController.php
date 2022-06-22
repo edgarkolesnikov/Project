@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\comments;
 use App\Models\products;
 use App\Models\roles;
 use App\Models\User;
@@ -12,24 +13,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
-    public function __construct(Request $request)
-    {
-        $this->middleware('auth');
-        if (!Auth::guest())
-        {
-            if (!$request->user()->hasRole_id('2'))
-            {
-                return redirect('/');
-            }
-        }
-        else
-        {
-            return redirect('/');
-        }
-    }
+
 
     public function index()
     {
+        if(Auth::user()->role_id != '2'){
+            return redirect('/');
+        }
         $data['roles'] = roles::all();
         $data['users'] = User::all();
         return view('admin.home', $data);
@@ -37,6 +27,9 @@ class AdminController extends Controller
 
     public function products()
     {
+        if(Auth::user()->role_id != '2'){
+            return redirect('/');
+        }
         $data['products'] = products::all();
         return view('admin.productList', $data);
     }
@@ -67,4 +60,12 @@ class AdminController extends Controller
         return Redirect::back();
     }
 
+    public function userComments()
+    {
+        if(Auth::user()->role_id != '2'){
+            return redirect('/');
+        }
+        $data['comments'] = comments::all();
+        return view('admin.comments', $data);
+    }
 }

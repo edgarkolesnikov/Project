@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    <h2>All products</h2>
     <div class="row row-cols-1 row-cols-md-3">
         @foreach($products as $product)
                     <div class="col-md-3">
@@ -19,7 +20,7 @@
                                 <p class="card-text">{{$product->description}}</p>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">€{{$product->price}}</small>
+                                <small class="text">€{{$product->price}}</small>
                             </div>
                         </div>
                     </div>
@@ -27,7 +28,9 @@
             @endforeach
 
     </div>
+    {{$products->links()}}
 </div>
+
 
 
 @endsection

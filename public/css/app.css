@@ -11292,7 +11292,7 @@ textarea.form-control-lg {
     clear:both;
     padding: 10px;
     border-radius: 20px;
-
+    margin: 5px;
 }
 
 .sent{
@@ -11301,6 +11301,7 @@ textarea.form-control-lg {
     clear:both;
     padding: 10px;
     border-radius: 20px;
+    margin: 5px;
 }
 
 .table{
@@ -11312,7 +11313,6 @@ th, td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-
 }
 
 tr:hover {
@@ -11329,4 +11329,31 @@ tr:hover {
     text-align: left;
     margin: 5px;
 }
+
+.col-md-3{
+    margin: 5px;
+}
+
+.go-to {
+    background-color: #eccccf;
+}
+
+.user-details {
+    text-align: center;
+    background-color: #eccccf;
+}
+
+.row .photos .item {
+    padding-bottom:30px;
+}
+
+.w-100 {
+    background-color: white;
+}
+
+.unread {
+    border-style: groove;
+    margin: 10px;
+}
+
 

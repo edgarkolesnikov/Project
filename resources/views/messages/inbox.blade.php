@@ -6,11 +6,12 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Inbox') }}</div>
+                    <div class="card-body">
                     @foreach($messages as $chatFriendId => $message)
-                        <div class="card-body">
+
                             <div class="message-wrapper">
                                 <div class="chat-friend
-                                    {{($message->status == 1) ? 'unread' : 'read'}}
+                                    {{($message->status === 1) ? 'unread' : 'read'}}
                                     ">
                                     @if($message->sender_id == $chatFriendId)
                                         {{$message->sender->name}}
@@ -22,8 +23,9 @@
                                     <a href="{{route('messages.read', $chatFriendId)}}">Read more..</a>
                                 </div>
                             </div>
-                        </div>
+                        <hr>
                     @endforeach
+                    </div>
                 </div>
             </div>
         </div>

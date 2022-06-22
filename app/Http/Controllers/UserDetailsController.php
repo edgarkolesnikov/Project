@@ -98,7 +98,7 @@ class UserDetailsController extends Controller
         $user = Auth::user();
         $user->name = $request->post('name');
         $user->save();
-        return back()->with('message', 'Profile Updated');
+        return back()->with('success', 'Profile Updated');
     }
 
     /**

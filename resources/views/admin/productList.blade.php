@@ -40,10 +40,8 @@
                         <td>{{$product->created_at}}</td>
                         <td>{{$product->updated_at}}</td>
                     </tr>
-
                     @endforeach
                     </tbody>
-
                     <input type="submit" value="Delete">
             </form>
         </table>

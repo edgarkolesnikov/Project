@@ -69,4 +69,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(roles::class, 'id', 'role_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(comments::class, 'user_id', 'id');
+    }
 }

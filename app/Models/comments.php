@@ -13,4 +13,9 @@ class comments extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function product()
+    {
+        return $this->hasOne(products::class, 'id', 'product_id');
+    }
 }

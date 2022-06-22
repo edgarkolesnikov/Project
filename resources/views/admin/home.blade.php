@@ -12,6 +12,9 @@
                 <th scope="col">Last Name</th>
                 <th scope="col">Role</th>
                 <th scope="col">Registered since</th>
+                <th scope="col"># of Products</th>
+                <th scope="col">Comments written</th>
+                <th scope="col">Favoured</th>
 
             </tr>
             </thead>
@@ -34,8 +37,10 @@
                                         @endif
                                     @endforeach
                                 </select></th>
-                        <th>{{$user->role->name}}</th>
                         <th>{{$user->created_at}}</th>
+                        <th>{{count($user->product)}}</th>
+                        <th>{{count($user->comments)}}</th>
+                        <th>{{count($user->favouriteProducts)}}</th>
                     </tr>
                     @endforeach
                     </tbody>
