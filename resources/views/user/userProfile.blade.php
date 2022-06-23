@@ -37,6 +37,21 @@
                                     <p> <a href="{{url('login')}}"> Contact me</a></p>
                                 @endif
                             </div>
+                            <div class="col-md-6">
+                                <div class="media">
+                                    @if(Auth::user())
+                                        @if($user->id != Auth::id())
+                                            @if($checkIfRated->isEmpty())
+                                                <form method="POST"
+                                                      action="{{route('functionality.rateUserForm', $user->id)}}">
+                                                    @csrf
+                                                    <input type="submit" class="btn btn-success" value="Rate {{$user->name}}">
+                                                </form>
+                                            @endif
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +72,11 @@
                     <div class="col-6 col-lg-3">
                         <div class="count-data user-details">
                             <h6 class="count h2">{{$currently_selling}}</h6>
-                            <p class="m-0px font-w-600">Curently selling</p>
+                            @if($currently_selling > 0)
+                            <a href="{{route('product.userListing', $user->id)}}"><p class="m-0px font-w-600">Curently selling</p></a>
+                            @else
+                                <p class="m-0px font-w-600">Curently selling</p></a>
+                                @endif
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
@@ -70,6 +89,21 @@
                         <div class="count-data user-details">
                             <h6 class="count h2">{{$rating}}</h6>
                             <p class="m-0px font-w-600">Rating</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="about-text go-to">
+                        <h2 class="dark-color">Reviews</h2>
+                        <div class="row about-list">
+                            <div class="col-md-12">
+                                @foreach($reviews as $assessment)
+                                <div class="media">
+                                    <h4>{{$assessment->estimatorDetails->name}}</h4>
+                                    <p>{{$assessment->review}}</p>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -23,6 +23,7 @@
                                     <input type="text" name="title" class="form-control" placeholder="Title">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="name"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
@@ -30,6 +31,7 @@
                                     <input type="text" name="name" class="form-control" placeholder="Name">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Categories') }}</label>
@@ -42,6 +44,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="brand"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Brand') }}</label>
@@ -54,6 +57,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="clothes"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Clothes') }}</label>
@@ -67,6 +71,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="size"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Size') }}</label>
@@ -80,37 +85,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            {{--                                    <select class="form-con/trol-sm">--}}
-                            {{--                                        <option value="0" disabled="true" selected="true">Size</option>--}}
-                            {{--                                    </select>--}}
-
-                            {{--                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>--}}
-                            {{--                                    <script type="text/javascript">--}}
-
-                            {{--                                        $(document).ready(function () {--}}
-                            {{--                                            $(document).on('change', '.form-select', function () {--}}
-                            {{--                                                var id = $(this).val();--}}
-                            {{--                                                var div=$(this).parent();--}}
-                            {{--                                                var op=" ";--}}
-                            {{--                                                $.ajax({--}}
-                            {{--                                                    type: 'get',--}}
-                            {{--                                                    url: '{!! URL::to('sizeByClothes') !!}',--}}
-                            {{--                                                    data: {'id': id},--}}
-                            {{--                                                    success:function(data){--}}
-                            {{--                                                        op+='<option value ="0" selected disabled>chose product</option>';--}}
-                            {{--                                                        for(var i=0; i<data.length;i++){--}}
-                            {{--                                                            op+='<option value ="'+data[i].id+'">' +data[i].name+'</option>';--}}
-                            {{--                                                        }--}}
-                            {{--                                                        div.find('.form-control-sm').html(" ");--}}
-                            {{--                                                        div.find('.form-control-sm').append(op);--}}
-                            {{--                                                    },--}}
-                            {{--                                                    error:function(){--}}
-                            {{--                                                    }--}}
-                            {{--                                                });--}}
-                            {{--                                            });--}}
-                            {{--                                        });--}}
-                            {{--                                    </script>--}}
 
                             <div class="row mb-3">
                                 <label for="color"
@@ -157,6 +131,7 @@
                                               placeholder="Description"> </textarea>
                                 </div>
                             </div>
+
                             <div class="row mb-6">
                                 <label for="images"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Images') }}</label>
@@ -182,11 +157,9 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <iframe src="https://www.meteoblue.com/en/weather/maps/widget/zimov%e2%80%99ye-kezhemskoye_russia_1485057?windAnimation=0&windAnimation=1&gust=0&gust=1&satellite=0&satellite=1&cloudsAndPrecipitation=0&cloudsAndPrecipitation=1&temperature=0&temperature=1&sunshine=0&sunshine=1&extremeForecastIndex=0&extremeForecastIndex=1&geoloc=fixed&tempunit=C&windunit=km%252Fh&lengthunit=metric&zoom=5&autowidth=auto"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%; height: 720px"></iframe><div><!-- DO NOT REMOVE THIS LINK --><a href="https://www.meteoblue.com/en/weather/maps/zimov%e2%80%99ye-kezhemskoye_russia_1485057?utm_source=weather_widget&utm_medium=linkus&utm_content=map&utm_campaign=Weather%2BWidget" target="_blank" rel="noopener">meteoblue</a></div>
 @endsection

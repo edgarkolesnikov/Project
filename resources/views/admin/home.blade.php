@@ -15,7 +15,6 @@
                 <th scope="col"># of Products</th>
                 <th scope="col">Comments written</th>
                 <th scope="col">Favoured</th>
-
             </tr>
             </thead>
 
@@ -25,7 +24,7 @@
                     @csrf
                     <tr>
                         <th>{{$user->id}}</th>
-                        <th>{{$user->name}}</th>
+                        <th><a href="{{route('user.profile', $user->id)}}">{{$user->name}}</a></th>
                         <th>{{$user->details->last_name}}</th>
                         <input type="hidden" name="user_id[]" value="{{$user->id}}">
                             <th><select name="role[]" class="standard-select">

@@ -118,9 +118,11 @@ class UserDetailsController extends Controller
         $data['currently_selling'] = products::where('user_id', $id)->where('status_id', '1')->count();
         $rating = ratings::where('user_id', $id)->pluck('grade')->avg();
         $data['rating'] = round($rating, 2);
+        $data['reviews'] = ratings::where('user_id', $id) ->get();
         $data['user'] = \App\Models\User::find($id);
         $data['userDetails'] = user_details::where('user_id', $id)->get();
         $data['userRatings'] = ratings::where('user_id', $id)->get();
+        $data['checkIfRated'] = ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
         return view('user.userProfile', $data);
     }
 

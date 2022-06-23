@@ -30,7 +30,7 @@ class ProductsController extends Controller
     public function index()
     {
         $data['images'] = images::all();
-        $data['products'] = products::paginate(3);
+        $data['products'] = products::paginate(12);
         return view('product.list', $data);
     }
 
@@ -253,4 +253,10 @@ class ProductsController extends Controller
         return Redirect::back();
     }
 
+    public function userListing($id)
+    {
+        $data['images'] = images::all();
+        $data['products'] = products::where('user_id', $id)->where('status_id', 1)->paginate(12);
+        return view('product.userListing', $data);
+    }
 }

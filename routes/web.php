@@ -25,6 +25,8 @@ Route::post('/update-password', [App\Http\Controllers\FunctionalityController::c
 Route::post('/search', [App\Http\Controllers\FunctionalityController::class, 'search'])->name('search.all');
 Route::delete('/deleteImage/{id}', [App\Http\Controllers\FunctionalityController::class, 'deleteImage'])->name('deleteImage');
 Route::post('/product/filtered', [App\Http\Controllers\FunctionalityController::class, 'filteredProducts'])->name('filtered.products');
+Route::post('/product/Rate/{id}', [App\Http\Controllers\FunctionalityController::class, 'rateUserForm'])->name('functionality.rateUserForm');
+Route::post('/product/Rate', [App\Http\Controllers\FunctionalityController::class, 'rateUser'])->name('functionality.rateUser');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -34,8 +36,9 @@ Route::get('/product/favourite/{id}', [App\Http\Controllers\ProductsController::
 Route::get('/product/unfavourite/{id}', [App\Http\Controllers\ProductsController::class, 'unfavouriteProduct'])->name('unfavouriteProduct');
 Route::get('/product/myFavourite', [App\Http\Controllers\ProductsController::class, 'userFavouritesProducts'])->name('product.userFavouritesProducts');
 Route::post('/product/deactivate', [App\Http\Controllers\ProductsController::class, 'deactivate'])->name('product.deactivate');
-
+Route::get('/product/user/Listing/{id}', [App\Http\Controllers\ProductsController::class, 'userListing'])->name('product.userListing');
 Route::get('/user/Products/{id}', [App\Http\Controllers\ProductsController::class, 'usersProducts'])->name('product.usersProducts');
+
 Route::get('/user/profile/{id}', [App\Http\Controllers\UserDetailsController::class, 'userProfile'])->name('user.profile');
 Route::get('/user/reviews/{id}', [App\Http\Controllers\UserDetailsController::class, 'userReviews'])->name('userDetails.reviews');
 

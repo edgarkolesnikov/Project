@@ -22,7 +22,9 @@
                     <tr>
                         <th scope="row">{{$loop->iteration}}</th>
                         <th>{{$comment->user->name}}</th>
-                        <th>{{$comment->product->name}}</th>
+
+                        <th><a href="{{route('product.show', $comment->product->id)}}">{{$comment->product->name}}</a></th>
+
                         <th>{{$comment->product->user->name}}</th>
                         <th>{{(strlen($comment->content) >35 ? substr($comment->content, 0, 50)."..." : $comment->content)}}</th>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\images;
 use App\Models\News;
 use App\Models\products;
+use App\Models\ratings;
 use App\Models\sizes;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,12 +15,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class FunctionalityController extends Controller
 {
-    public function sizeByClothes(Request $request)
-    {
-        $data = sizes::select('name', 'id')->where('cloth_id', $request->id)->get();
-        return response()->json($data);
-    }
-
     public function search(Request $request)
     {
         $search = $request->post('search');
@@ -97,6 +92,29 @@ class FunctionalityController extends Controller
         }
         $data['images'] = images::all();
         return view('search.filteredProducts', $data);
+    }
+
+    public function rateUserForm($id)
+    {
+        $rating = ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
+        if(!$rating->isEmpty()){
+            return Redirect('user/profile/'.$id);
+        }
+
+        $data['userRatings'] = ratings::where('user_id', $id)->get();
+        $data['user'] = User::find($id);
+        return view('user.ratingForm', $data);
+    }
+
+    public function rateUser(Request $request)
+    {
+        $rate = new ratings();
+        $rate->estimator_id = Auth::id();
+        $rate->user_id = $request->post('user_id');
+        $rate->grade = $request->post('rating');
+        $rate->review = $request->post('review');
+        $rate->save();
+        return Redirect('user/profile/'.$request->post('user_id'));
     }
 }
 
