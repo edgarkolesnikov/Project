@@ -68,11 +68,13 @@ tr:hover {
 .unread {
     border-style: groove;
     margin: 10px;
+    font: 20px Arial, sans-serif
 }
 
 .read {
     border-style: groove;
     margin: 10px;
+
 }
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);

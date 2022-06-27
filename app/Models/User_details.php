@@ -11,6 +11,6 @@ class user_details extends Model
 
     public function city()
     {
-        return $this->hasOne(cities::class, 'id', 'city_id');
+        return $this->hasOne(Cities::class, 'id', 'city_id');
     }
 }

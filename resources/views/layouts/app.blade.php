@@ -48,28 +48,28 @@
                             Filters
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <form method="POST" action="{{route('filtered.products')}}">
+                            <form method="GET" action="{{route('filtered.products')}}">
                                 @csrf
-                            <select name="category_id">
-                                <option value="" selected disabled> Select Category</option>
-                                @foreach($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                @endforeach
-                            </select>
+                                <select name="category_id">
+                                    <option value="" selected disabled> Select Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
 
-                            <select name="cloth_id">
-                                <option value="" selected disabled> Select Cloth</option>
-                                @foreach($clothes as $cloth)
-                                    <option value="{{$cloth->id}}">{{$cloth->name}}</option>
-                                @endforeach
-                            </select>
+                                <select name="cloth_id">
+                                    <option value="" selected disabled> Select Cloth</option>
+                                    @foreach($clothes as $cloth)
+                                        <option value="{{$cloth->id}}">{{$cloth->name}}</option>
+                                    @endforeach
+                                </select>
 
-                            <select name="size_id">
-                                <option value="" selected disabled> Select size</option>
-                                @foreach($sizes as $size)
-                                    <option value="{{$size->id}}">{{$size->name}}</option>
-                                @endforeach
-                            </select>
+                                <select name="size_id">
+                                    <option value="" selected disabled> Select size</option>
+                                    @foreach($sizes as $size)
+                                        <option value="{{$size->id}}">{{$size->name}}</option>
+                                    @endforeach
+                                </select>
 
                                 <select name="color_id">
                                     <option value="" selected disabled> Select color</option>
@@ -78,7 +78,7 @@
                                     @endforeach
                                 </select>
 
-                            <input type="submit" class="btn btn-secondary" value="Filter">
+                                <input type="submit" class="btn btn-secondary" value="Filter">
                             </form>
                         </div>
                     </li>
@@ -88,7 +88,7 @@
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->
 
-                    <form action="{{route('search.all')}}" method="POST">
+                    <form action="{{route('search.all')}}" method="GET">
                         @csrf
                         <input type="text" name="search" placeholder="search">
                         <input type="submit" value="submit" name="submit" placeholder="submit">
@@ -105,7 +105,6 @@
                             </li>
                         @endif
                     @else
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('product.create')}}">Publish</a>
                         </li>
@@ -138,14 +137,14 @@
                                 @endif
                                 <a class="dropdown-item" href="{{route('products.myProducts')}}">
                                     {{ __('My Products') }}
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                             </div>
                         </li>
                     @endguest

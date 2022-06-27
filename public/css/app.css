@@ -11357,11 +11357,13 @@ tr:hover {
 .unread {
     border-style: groove;
     margin: 10px;
+    font: 20px Arial, sans-serif
 }
 
 .read {
     border-style: groove;
     margin: 10px;
+
 }
 
 .starrating > input {display: none;}  /* Remove radio buttons */

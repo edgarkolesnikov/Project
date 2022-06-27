@@ -23,6 +23,3 @@
         </div>
     </div>
     <!-- Page content wrapper-->
-
-
-

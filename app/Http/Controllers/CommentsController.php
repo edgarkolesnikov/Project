@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\comments;
+use App\Models\Comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -44,7 +44,7 @@ class CommentsController extends Controller
         if ($validator->fails()) {
             return Redirect::back();
         } else {
-            $comment = new comments();
+            $comment = new Comments();
             $comment->user_id = Auth::id();
             $comment->product_id = $request->post('product_id');
             $comment->content = $request->post('comment');
@@ -57,7 +57,7 @@ class CommentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\comments  $comments
+     * @param  \App\Models\Comments  $comments
      * @return \Illuminate\Http\Response
      */
     public function show(comments $comments)
@@ -68,10 +68,10 @@ class CommentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\comments  $comments
+     * @param  \App\Models\Comments  $comments
      * @return \Illuminate\Http\Response
      */
-    public function edit(comments $comments)
+    public function edit(Comments $comments)
     {
         //
     }
@@ -83,7 +83,7 @@ class CommentsController extends Controller
      * @param  \App\Models\comments  $comments
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, comments $comments)
+    public function update(Request $request, Comments $comments)
     {
         //
     }
@@ -91,12 +91,12 @@ class CommentsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\comments  $comments
+     * @param  \App\Models\Comments  $comments
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $comment = comments::find($id);
+        $comment = Comments::find($id);
         $comment->delete();
         return Redirect::back();
     }

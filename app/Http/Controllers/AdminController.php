@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\comments;
-use App\Models\products;
-use App\Models\roles;
+use App\Models\Comments;
+use App\Models\Products;
+use App\Models\Roles;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -20,7 +19,7 @@ class AdminController extends Controller
         if(Auth::user()->role_id != '2'){
             return redirect('/');
         }
-        $data['roles'] = roles::all();
+        $data['roles'] = Roles::all();
         $data['users'] = User::all();
         return view('admin.home', $data);
     }
@@ -30,7 +29,7 @@ class AdminController extends Controller
         if(Auth::user()->role_id != '2'){
             return redirect('/');
         }
-        $data['products'] = products::all();
+        $data['products'] = Products::all();
         return view('admin.productList', $data);
     }
 
@@ -39,7 +38,7 @@ class AdminController extends Controller
         $productsIds = $request->post('check');
         if ($productsIds != null) {
             foreach ($productsIds as $productId) {
-                $product = products::find($productId);
+                $product = Products::find($productId);
                 $product->delete();
             }
         }
@@ -65,7 +64,7 @@ class AdminController extends Controller
         if(Auth::user()->role_id != '2'){
             return redirect('/');
         }
-        $data['comments'] = comments::all();
+        $data['comments'] = Comments::all();
         return view('admin.comments', $data);
     }
 }

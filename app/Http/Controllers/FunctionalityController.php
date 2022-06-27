@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\images;
 use App\Models\News;
-use App\Models\products;
-use App\Models\ratings;
-use App\Models\sizes;
+use App\Models\Products;
+use App\Models\Ratings;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,17 +16,17 @@ class FunctionalityController extends Controller
 {
     public function search(Request $request)
     {
-        $search = $request->post('search');
+        $search = $request->get('search');
         if($search === null){
             return Redirect::back();
         }
-        $products = products::where('title', 'LIKE', '%'. $search . '%')->
+        $products = Products::where('title', 'LIKE', '%'. $search . '%')->
         orwhere('name', 'LIKE', '%'. $search . '%')->
         orwhere('description', 'LIKE', '%'. $search . '%')->
         orwhere('price', '<=', $search )->get();
         $images = [];
         foreach($products as $product){
-            $photos = images::where('product_id', $product->id)->first();
+            $photos = Images::where('product_id', $product->id)->first();
             $photo = explode('|', $photos->image);
             $images[] = [
                 'product_id' => $product->id,
@@ -41,7 +40,7 @@ class FunctionalityController extends Controller
 
     public function deleteImage($id)
     {
-        images::where('id', $id)->delete();
+        Images::where('id', $id)->delete();
         return Redirect::back();
     }
 
@@ -74,41 +73,42 @@ class FunctionalityController extends Controller
     public function filteredProducts(Request $request)
     {
         $array = [
-            'category_id' => $request->post('category_id'),
-            'cloth_id' => $request->post('cloth_id'),
-            'size_id' => $request->post('size_id'),
-            'color_id' => $request->post('color_id'),
+            'category_id' => $request->get('category_id'),
+            'cloth_id' => $request->get('cloth_id'),
+            'size_id' => $request->get('size_id'),
+            'color_id' => $request->get('color_id'),
         ];
+
         $collection = array_filter($array);
         foreach ($collection as $key => $atribute) {
             if($atribute == null){
-                $data['products'] = products::select($key)->get();
+                $data['products'] = Products::select($key)->get();
             }else {
-                $data['products'] = products::where($key, $atribute)->get();
+                $data['products'] = Products::where($key, $atribute)->get();
             }
         }
         if(empty($data['products'])){
             return redirect()->route('home');
         }
-        $data['images'] = images::all();
+        $data['images'] = Images::all();
         return view('search.filteredProducts', $data);
     }
 
     public function rateUserForm($id)
     {
-        $rating = ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
+        $rating = Ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
         if(!$rating->isEmpty()){
             return Redirect('user/profile/'.$id);
         }
 
-        $data['userRatings'] = ratings::where('user_id', $id)->get();
+        $data['userRatings'] = Ratings::where('user_id', $id)->get();
         $data['user'] = User::find($id);
         return view('user.ratingForm', $data);
     }
 
     public function rateUser(Request $request)
     {
-        $rate = new ratings();
+        $rate = new Ratings();
         $rate->estimator_id = Auth::id();
         $rate->user_id = $request->post('user_id');
         $rate->grade = $request->post('rating');

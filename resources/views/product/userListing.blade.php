@@ -24,13 +24,8 @@
                         </div>
                     </div>
                 </div>
-
             @endforeach
-
         </div>
         {{$products->links()}}
     </div>
-
-
-
 @endsection

@@ -47,30 +47,30 @@ class User extends Authenticatable
 
     public function favouriteProducts()
     {
-        return $this->hasMany(favourite_products::class, 'user_id', 'id');
+        return $this->hasMany(Favourite_products::class, 'user_id', 'id');
     }
 
     public function product()
     {
-        return $this->hasMany(products::class, 'user_id', 'id');
+        return $this->hasMany(Products::class, 'user_id', 'id');
     }
 
     public function details()
     {
-        return $this->hasOne(user_details::class, 'user_id', 'id');
+        return $this->hasOne(User_details::class, 'user_id', 'id');
     }
 
     public function ratings()
     {
-        return $this->hasMany(ratings::class, 'user_id', 'id');
+        return $this->hasMany(Ratings::class, 'user_id', 'id');
     }
 
     public function role()
     {
-        return $this->hasOne(roles::class, 'id', 'role_id');
+        return $this->hasOne(Roles::class, 'id', 'role_id');
     }
     public function comments()
     {
-        return $this->hasMany(comments::class, 'user_id', 'id');
+        return $this->hasMany(Comments::class, 'user_id', 'id');
     }
 }

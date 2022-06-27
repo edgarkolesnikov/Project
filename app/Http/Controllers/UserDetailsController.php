@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\cities;
-use App\Models\products;
-use App\Models\ratings;
-use App\Models\user_details;
+use App\Models\Cities;
+use App\Models\Products;
+use App\Models\Ratings;
+use App\Models\User_details;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +31,7 @@ class UserDetailsController extends Controller
     public function create()
     {
         $data['user'] = Auth::user();
-        $data['cities'] = cities::all();
+        $data['cities'] = Cities::all();
         return view('user.userProvideDetails', $data);
     }
 
@@ -52,7 +52,7 @@ class UserDetailsController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'All field must be filled.');
         } else {
-            $user_details = new user_details();
+            $user_details = new User_details();
             $user_details->user_id = Auth::id();
             $user_details->last_name = $request->post('last_name');
             $user_details->city_id = $request->post('city');
@@ -65,10 +65,10 @@ class UserDetailsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\user_details $user_details
+     * @param \App\Models\User_details $user_details
      * @return \Illuminate\Http\Response
      */
-    public function show(user_details $user_details)
+    public function show(User_details $user_details)
     {
         //
     }
@@ -76,14 +76,14 @@ class UserDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\user_details $user_details
+     * @param \App\Models\User_details $user_details
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $data['user'] = Auth::user();
-        $data['userDetails'] = user_details::where('user_id', $id)->first();
-        $data['cities'] = cities::all();
+        $data['userDetails'] = User_details::where('user_id', $id)->first();
+        $data['cities'] = Cities::all();
         return view('user.userDetailsUpdate', $data);
     }
 
@@ -91,7 +91,7 @@ class UserDetailsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\user_details $user_details
+     * @param \App\Models\User_details $user_details
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -105,7 +105,7 @@ class UserDetailsController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'All field must be filled in');
         } else {
-            $user_details = user_details::where('user_id', $id)->get();
+            $user_details = User_details::where('user_id', $id)->get();
             foreach ($user_details as $user_detail) {
                 $user_detail->last_name = $request->post('last_name');
                 $user_detail->city_id = $request->post('city');
@@ -125,7 +125,7 @@ class UserDetailsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\user_details $user_details
+     * @param \App\Models\User_details $user_details
      * @return \Illuminate\Http\Response
      */
     public function destroy(user_details $user_details)
@@ -135,21 +135,21 @@ class UserDetailsController extends Controller
 
     public function userProfile($id)
     {
-        $data['sold'] = products::where('user_id', $id)->where('status_id', '2')->count();
-        $data['currently_selling'] = products::where('user_id', $id)->where('status_id', '1')->count();
-        $rating = ratings::where('user_id', $id)->pluck('grade')->avg();
-        $data['rating'] = round($rating, 2);
-        $data['reviews'] = ratings::where('user_id', $id) ->get();
+        $data['sold'] = Products::where('user_id', $id)->where('status_id', '2')->count();
+        $data['currently_selling'] = Products::where('user_id', $id)->where('status_id', '1')->count();
+        $rating = Ratings::where('user_id', $id)->pluck('grade')->avg();
+        $data['rating'] = Round($rating, 2);
+        $data['reviews'] = Ratings::where('user_id', $id) ->get();
         $data['user'] = \App\Models\User::find($id);
-        $data['userDetails'] = user_details::where('user_id', $id)->get();
-        $data['userRatings'] = ratings::where('user_id', $id)->get();
-        $data['checkIfRated'] = ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
+        $data['userDetails'] = User_details::where('user_id', $id)->get();
+        $data['userRatings'] = Ratings::where('user_id', $id)->get();
+        $data['checkIfRated'] = Ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
         return view('user.userProfile', $data);
     }
 
     public function userReviews($id)
     {
-        $data['reviews'] = ratings::where('user_id', $id)->get();
+        $data['reviews'] = Ratings::where('user_id', $id)->get();
         return view('user.reviews', $data);
     }
 }

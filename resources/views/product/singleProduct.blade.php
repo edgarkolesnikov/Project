@@ -67,7 +67,7 @@
                                     @csrf
                                     @method('GET')
                                     <input type="submit" value="Delete from watchlist"
-                                           class="btn btn-primary float-start">
+                                           class="btn btn-danger float-start">
                                 </form>
                             @endif
                         @endif
@@ -120,12 +120,9 @@
                         </div>
                     </div>
                 </div>
-
             @endforeach
-
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
 @endsection

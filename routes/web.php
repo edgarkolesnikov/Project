@@ -22,9 +22,9 @@ Auth::routes();
 
 Route::get('/change-password', [App\Http\Controllers\FunctionalityController::class, 'editPassword'])->name('functionality.passwordEdit');
 Route::post('/update-password', [App\Http\Controllers\FunctionalityController::class, 'updatePassword'])->name('functionality.updatePassword');
-Route::post('/search', [App\Http\Controllers\FunctionalityController::class, 'search'])->name('search.all');
+Route::get('/search', [App\Http\Controllers\FunctionalityController::class, 'search'])->name('search.all');
 Route::delete('/deleteImage/{id}', [App\Http\Controllers\FunctionalityController::class, 'deleteImage'])->name('deleteImage');
-Route::post('/product/filtered', [App\Http\Controllers\FunctionalityController::class, 'filteredProducts'])->name('filtered.products');
+Route::get('/product/filtered', [App\Http\Controllers\FunctionalityController::class, 'filteredProducts'])->name('filtered.products');
 Route::post('/product/Rate/{id}', [App\Http\Controllers\FunctionalityController::class, 'rateUserForm'])->name('functionality.rateUserForm');
 Route::post('/product/Rate', [App\Http\Controllers\FunctionalityController::class, 'rateUser'])->name('functionality.rateUser');
 

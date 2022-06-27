@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\messages;
+use App\Models\Messages;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class MessagesController extends Controller
     public function index()
     {
         $userId= Auth::id();
-        $messagesData = messages::where('sender_id', $userId)->orWhere('receiver_id', $userId)->get();
+        $messagesData = Messages::where('sender_id', $userId)->orWhere('receiver_id', $userId)->get();
         $messages = [];
         foreach($messagesData as $message) {
             if($message->sender_id != $userId){
@@ -52,7 +52,7 @@ class MessagesController extends Controller
     public function store(Request $request)
     {
 
-        $message = new messages();
+        $message = new Messages();
         $message->sender_id = Auth::id();
         $message->receiver_id = $request->receiver_id;
         $message->content = $request->post('message');
@@ -65,10 +65,10 @@ class MessagesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\messages  $messages
+     * @param  \App\Models\Messages  $messages
      * @return \Illuminate\Http\Response
      */
-    public function show(messages $messages)
+    public function show(Messages $messages)
     {
         //
     }
@@ -76,10 +76,10 @@ class MessagesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\messages  $messages
+     * @param  \App\Models\Messages  $messages
      * @return \Illuminate\Http\Response
      */
-    public function edit(messages $messages)
+    public function edit(Messages $messages)
     {
         //
     }
@@ -88,10 +88,10 @@ class MessagesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\messages  $messages
+     * @param  \App\Models\Messages  $messages
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, messages $messages)
+    public function update(Request $request, Messages $messages)
     {
         //
     }
@@ -99,10 +99,10 @@ class MessagesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\messages  $messages
+     * @param  \App\Models\Messages  $messages
      * @return \Illuminate\Http\Response
      */
-    public function destroy(messages $messages)
+    public function destroy(Messages $messages)
     {
         //
     }
@@ -111,12 +111,12 @@ class MessagesController extends Controller
     {
         $userId = Auth::id();
         $data['receiver'] = User::find($chatFriendId);
-        $data['messages'] = messages::where('receiver_id', $chatFriendId)
+        $data['messages'] = Messages::where('receiver_id', $chatFriendId)
             ->where('sender_id', $userId)
             ->orWhere('receiver_id', $userId)
             ->where('sender_id', $chatFriendId)
             ->get();
-        $unreadMessages = messages::where('receiver_id', $userId)
+        $unreadMessages = Messages::where('receiver_id', $userId)
             ->where('status', 1)
             ->get();
         foreach ($unreadMessages as $msg){

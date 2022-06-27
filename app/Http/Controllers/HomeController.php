@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\images;
-use App\Models\products;
+use App\Models\Images;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,9 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['popularProducts'] = products::orderBy('views', 'desc')->take(3)->get();
-        $data['newProducts'] = products::orderBy('id', 'desc')->take(3)->get();
-        $data['images'] = images::all();
+        $data['popularProducts'] = Products::orderBy('views', 'desc')->take(4)->get();
+        $data['newProducts'] = Products::orderBy('id', 'desc')->take(4)->get();
+        $data['images'] = Images::all();
         return view('Home', $data);
     }
 }

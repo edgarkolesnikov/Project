@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\brands;
-use App\Models\categories;
-use App\Models\clothes;
-use App\Models\colors;
-use App\Models\comments;
-use App\Models\favourite_products;
-use App\Models\images;
-use App\Models\materials;
-use App\Models\News;
-use App\Models\products;
-use App\Models\sizes;
+use App\Models\Brands;
+use App\Models\Categories;
+use App\Models\Clothes;
+use App\Models\Colors;
+use App\Models\Comments;
+use App\Models\Favourite_products;
+use App\Models\Images;
+use App\Models\Materials;
+use App\Models\Products;
+use App\Models\Sizes;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,8 +29,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $data['images'] = images::all();
-        $data['products'] = products::paginate(12);
+        $data['images'] = Images::all();
+        $data['products'] = Products::paginate(12);
         return view('product.list', $data);
     }
 
@@ -42,12 +41,12 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $data['categories'] = categories::all();
-        $data['clothes'] = clothes::all();
-        $data['colors'] = colors::all();
-        $data['brands'] = brands::all();
-        $data['sizes'] = sizes::all();
-        $data['materials'] = materials::all();
+        $data['categories'] = Categories::all();
+        $data['clothes'] = Clothes::all();
+        $data['colors'] = Colors::all();
+        $data['brands'] = Brands::all();
+        $data['sizes'] = Sizes::all();
+        $data['materials'] = Materials::all();
         return view('product.form', $data);
     }
 
@@ -75,7 +74,7 @@ class ProductsController extends Controller
             return back()->with('error', 'All field must be filled in, post is not created.');
         } else {
 
-            $product = new products();
+            $product = new Products();
             $product->title = $request->post('title');
             $product->name = $request->post('name');
             $product->slug = Str::slug($product->title);
@@ -101,7 +100,7 @@ class ProductsController extends Controller
                     $upload_path = 'images/';
                     $image_url = $upload_path . $image_full_name;
                     $file->move($upload_path, $image_full_name);
-                    images::insert([
+                    Images::insert([
                         'image' => $image_url,
                         'product_id' => $id,
                     ]);
@@ -115,17 +114,17 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\products $products
+     * @param \App\Models\Products $products
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $userId = Auth::id();
-        $data['favoredProduct'] = favourite_products::where('product_id', $id)->where('user_id', $userId)->get();
-        $data['comments'] = comments::where('product_id', $id)->get();
-        $data['images'] = images::where('product_id', $id)->orderBy('id', 'desc')->get();
+        $data['favoredProduct'] = Favourite_products::where('product_id', $id)->where('user_id', $userId)->get();
+        $data['comments'] = Comments::where('product_id', $id)->get();
+        $data['images'] = Images::where('product_id', $id)->orderBy('id', 'desc')->get();
 
-        $product = products::where('id', $id)->get();
+        $product = Products::where('id', $id)->get();
         foreach ($product as $item) {
             $item->views += 1;
             $data['product'] = $item;
@@ -138,19 +137,19 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\products $products
+     * @param \App\Models\Products $products
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $data['product'] = products::find($id);
-        $data['categories'] = categories::all();
-        $data['clothes'] = clothes::all();
-        $data['colors'] = colors::all();
-        $data['brands'] = brands::all();
-        $data['sizes'] = sizes::all();
-        $data['materials'] = materials::all();
-        $data['images'] = images::where('product_id', $id)->get();
+        $data['product'] = Products::find($id);
+        $data['categories'] = Categories::all();
+        $data['clothes'] = Clothes::all();
+        $data['colors'] = Colors::all();
+        $data['brands'] = Brands::all();
+        $data['sizes'] = Sizes::all();
+        $data['materials'] = Materials::all();
+        $data['images'] = Images::where('product_id', $id)->get();
 
 
         return view('product.editProduct', $data);
@@ -160,7 +159,7 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\products $products
+     * @param \App\Models\Products $products
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -180,7 +179,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'All field must be filled in, post is not updated.');
         } else {
-            $products = products::where('id', $id)->get();
+            $products = Products::where('id', $id)->get();
             foreach ($products as $product) {
                 $product->title = $request->post('title');
                 $product->name = $request->post('name');
@@ -206,7 +205,7 @@ class ProductsController extends Controller
                     $upload_path = 'public/images/';
                     $image_url = $upload_path . $image_full_name;
                     $file->move($upload_path, $image_full_name);
-                    images::insert([
+                    Images::insert([
                         'image' => $image_url,
                         'product_id' => $id,
                     ]);
@@ -219,7 +218,7 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\products $products
+     * @param \App\Models\Products $products
      * @return \Illuminate\Http\Response
      */
     public function destroy(products $products)
@@ -229,7 +228,7 @@ class ProductsController extends Controller
 
     public function favouriteProduct($id)
     {
-        $favourite = new favourite_products();
+        $favourite = new Favourite_products();
         $favourite->user_id = Auth::id();
         $favourite->product_id = $id;
         $favourite->save();
@@ -239,37 +238,37 @@ class ProductsController extends Controller
     public function unfavouriteProduct($id)
     {
         $userId = Auth::id();
-        $favourite = favourite_products::where('user_id', $userId)->where('product_id', $id);
+        $favourite = Favourite_products::where('user_id', $userId)->where('product_id', $id);
         $favourite->delete();
         return Redirect::back();
     }
 
     public function popularProducts()
     {
-        $data['products'] = products::orderBy('views', 'desc')->paginate(15)->all();
-        $data['images'] = images::all();
+        $data['products'] = Products::orderBy('views', 'desc')->paginate(15)->all();
+        $data['images'] = Images::all();
         return view('product.popular', $data);
     }
 
     public function newestProducts()
     {
-        $data['products'] = products::orderBy('id', 'desc')->paginate(15)->all();
-        $data['images'] = images::all();
+        $data['products'] = Products::orderBy('id', 'desc')->paginate(15)->all();
+        $data['images'] = Images::all();
         return view('product.newest', $data);
     }
 
     public function userFavouritesProducts()
     {
         $userId = Auth::id();
-        $data['favourites'] = favourite_products::where('user_id', $userId)->get();
-        $data['products'] = products::all();
-        $data['images'] = images::all();
+        $data['favourites'] = Favourite_products::where('user_id', $userId)->get();
+        $data['products'] = Products::all();
+        $data['images'] = Images::all();
         return view('user.favourite', $data);
     }
 
     public function usersProducts($id)
     {
-        $data['products'] = products::where('user_id', $id)->where('status_id', 1)->get();
+        $data['products'] = Products::where('user_id', $id)->where('status_id', 1)->get();
         return view('user.productList', $data);
     }
 
@@ -278,7 +277,7 @@ class ProductsController extends Controller
         $productsIds = $request->post('check');
         if ($productsIds != null) {
             foreach ($productsIds as $productId) {
-                $product = products::find($productId);
+                $product = Products::find($productId);
                 $product->status_id = 2;
                 $product->save();
             }
@@ -288,16 +287,16 @@ class ProductsController extends Controller
 
     public function userListing($id)
     {
-        $data['images'] = images::all();
-        $data['products'] = products::where('user_id', $id)->where('status_id', 1)->paginate(12);
+        $data['images'] = Images::all();
+        $data['products'] = Products::where('user_id', $id)->where('status_id', 1)->paginate(12);
         return view('product.userListing', $data);
     }
 
     public function myProducts()
     {
         $id = Auth::id();
-        $data['products'] = products::where('user_id', $id)->paginate(12);
-        $data['images'] = images::all();
+        $data['products'] = Products::where('user_id', $id)->paginate(12);
+        $data['images'] = Images::all();
         return view('product.myProducts', $data);
     }
 }

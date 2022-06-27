@@ -11,37 +11,37 @@ class products extends Model
 
     public function category()
     {
-        return $this->hasOne(categories::class, 'id', 'category_id');
+        return $this->hasOne(Categories::class, 'id', 'category_id');
     }
 
     public function cloth()
     {
-        return $this->hasOne(clothes::class, 'id', 'cloth_id');
+        return $this->hasOne(Clothes::class, 'id', 'cloth_id');
     }
 
     public function color()
     {
-        return $this->hasOne(colors::class, 'id', 'color_id');
+        return $this->hasOne(Colors::class, 'id', 'color_id');
     }
 
     public function brand()
     {
-        return $this->hasOne(brands::class, 'id', 'brand_id');
+        return $this->hasOne(Brands::class, 'id', 'brand_id');
     }
 
     public function size()
     {
-        return $this->hasOne(sizes::class, 'id', 'size_id');
+        return $this->hasOne(Sizes::class, 'id', 'size_id');
     }
 
     public function material()
     {
-        return $this->hasOne(materials::class, 'id', 'material_id');
+        return $this->hasOne(Materials::class, 'id', 'material_id');
     }
 
     public function images()
     {
-        return $this->hasMany(images::class, 'product_id', 'id');
+        return $this->hasMany(Images::class, 'product_id', 'id');
     }
 
     public function user()
@@ -51,7 +51,7 @@ class products extends Model
 
     public function status()
     {
-        return $this->hasOne(active::class, 'id', 'status_id');
+        return $this->hasOne(Active::class, 'id', 'status_id');
     }
 
 }
