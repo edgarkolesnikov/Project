@@ -6,6 +6,7 @@ use App\Models\comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class CommentsController extends Controller
 {
@@ -37,13 +38,21 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $comment = new comments();
-        $comment->user_id = Auth::id();
-        $comment->product_id = $request->post('product_id');
-        $comment->content = $request->post('comment');
-        $comment->save();
-        return Redirect::back();
+        $validator = Validator::make($request->all(), [
+            'comment' => 'required|string|max:255',
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back();
+        } else {
+            $comment = new comments();
+            $comment->user_id = Auth::id();
+            $comment->product_id = $request->post('product_id');
+            $comment->content = $request->post('comment');
+            $comment->save();
+            return Redirect::back();
+        }
     }
+
 
     /**
      * Display the specified resource.

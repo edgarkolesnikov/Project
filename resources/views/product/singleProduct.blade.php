@@ -100,23 +100,27 @@
                 <div class="comment-widgets">
                     <div class="d-flex flex-row comment-row m-t-0">
                         <div class="comment-text w-100">
-                            <h6 class="font-medium"><h3>{{$comment->user->name}}</h3></h6>
+                            <h6 class="font-medium"><h2>{{$comment->user->name}}</h2></h6>
                             <span
-                                class="m-b-15 d-block">{{$comment->content}}</span>
+                                class="m-b-15 d-block"><h5>{{$comment->content}}</h5></span>
+
+                            @if($comment->user_id == Auth::id())
+                                <form class="form" method="POST"
+                                      action="{{route('comments.destroy', $comment->id)}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="delete-button-right">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </div>
+                                </form>
+                            @endif
                             <div class="comment-footer"><span
                                     class="text-muted float-right">{{$comment->created_at}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                @if($comment->user_id == Auth::id())
-                    <form class="form" method="POST"
-                          action="{{route('comments.destroy', $comment->id)}}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                @endif
+
             @endforeach
 
         </div>

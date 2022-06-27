@@ -38,6 +38,7 @@ Route::get('/product/myFavourite', [App\Http\Controllers\ProductsController::cla
 Route::post('/product/deactivate', [App\Http\Controllers\ProductsController::class, 'deactivate'])->name('product.deactivate');
 Route::get('/product/user/Listing/{id}', [App\Http\Controllers\ProductsController::class, 'userListing'])->name('product.userListing');
 Route::get('/user/Products/{id}', [App\Http\Controllers\ProductsController::class, 'usersProducts'])->name('product.usersProducts');
+Route::get('/products/MyProducts', [App\Http\Controllers\ProductsController::class, 'myProducts'])->name('products.myProducts');
 
 Route::get('/user/profile/{id}', [App\Http\Controllers\UserDetailsController::class, 'userProfile'])->name('user.profile');
 Route::get('/user/reviews/{id}', [App\Http\Controllers\UserDetailsController::class, 'userReviews'])->name('userDetails.reviews');

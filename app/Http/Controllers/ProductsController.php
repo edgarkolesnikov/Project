@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ProductsController extends Controller
@@ -58,39 +59,56 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new products();
-        $product->title = $request->post('title');
-        $product->name = $request->post('name');
-        $product->slug = Str::slug($product->title);
-        $product->description = $request->post('description');
-        $product->price = $request->post('price');
-        $product->user_id = Auth::id();
-        $product->category_id = $request->post('category');
-        $product->cloth_id = $request->post('cloth');
-        $product->color_id = $request->post('color');
-        $product->brand_id = $request->post('brand');
-        $product->size_id = $request->post('size');
-        $product->material_id = $request->post('material');
-        $product->views = 0;
-        $product->status_id = 1;
-        $product->save();
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:95',
+            'name' => 'required|max:255',
+            'price' => 'required',
+            'description' => 'required|max:255',
+            'category' => 'required',
+            'cloth' => 'required',
+            'color' => 'required',
+            'brand' => 'required',
+            'size' => 'required',
+            'material' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return back()->with('error', 'All field must be filled in, post is not created.');
+        } else {
 
-        $id = $product->id;
-        if ($files = $request->file('image')) {
-            foreach ($files as $file) {
-                $image_name = md5(rand(1, 10000));
-                $ext = strtolower($file->getClientOriginalExtension());
-                $image_full_name = $image_name . '.' . $ext;
-                $upload_path = 'images/';
-                $image_url = $upload_path . $image_full_name;
-                $file->move($upload_path, $image_full_name);
-                images::insert([
-                    'image' => $image_url,
-                    'product_id' => $id,
-                ]);
+            $product = new products();
+            $product->title = $request->post('title');
+            $product->name = $request->post('name');
+            $product->slug = Str::slug($product->title);
+            $product->description = $request->post('description');
+            $product->price = $request->post('price');
+            $product->user_id = Auth::id();
+            $product->category_id = $request->post('category');
+            $product->cloth_id = $request->post('cloth');
+            $product->color_id = $request->post('color');
+            $product->brand_id = $request->post('brand');
+            $product->size_id = $request->post('size');
+            $product->material_id = $request->post('material');
+            $product->views = 0;
+            $product->status_id = 1;
+            $product->save();
+
+            $id = $product->id;
+            if ($files = $request->file('image')) {
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name . '.' . $ext;
+                    $upload_path = 'images/';
+                    $image_url = $upload_path . $image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    images::insert([
+                        'image' => $image_url,
+                        'product_id' => $id,
+                    ]);
+                }
             }
+            return back()->with('success', 'Post created');
         }
-        return back()->with('success', 'Post created');
     }
 
 
@@ -105,7 +123,7 @@ class ProductsController extends Controller
         $userId = Auth::id();
         $data['favoredProduct'] = favourite_products::where('product_id', $id)->where('user_id', $userId)->get();
         $data['comments'] = comments::where('product_id', $id)->get();
-        $data['images'] = images::where('product_id', $id)->get();
+        $data['images'] = images::where('product_id', $id)->orderBy('id', 'desc')->get();
 
         $product = products::where('id', $id)->get();
         foreach ($product as $item) {
@@ -147,39 +165,55 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $products = products::where('id', $id)->get();
-        foreach ($products as $product) {
-            $product->title = $request->post('title');
-            $product->name = $request->post('name');
-            $product->slug = Str::slug($product->title);
-            $product->description = $request->post('description');
-            $product->price = $request->post('price');
-            $product->user_id = Auth::id();
-            $product->category_id = $request->post('category');
-            $product->cloth_id = $request->post('cloth');
-            $product->color_id = $request->post('color');
-            $product->brand_id = $request->post('brand');
-            $product->size_id = $request->post('size');
-            $product->material_id = $request->post('material');
-            $product->views = 0;
-            $product->status_id = 1;
-            $product->save();
-        }
-        if ($files = $request->file('image')) {
-            foreach ($files as $file) {
-                $image_name = md5(rand(1000, 10000));
-                $ext = strtolower($file->getClientOriginalExtension());
-                $image_full_name = $image_name . '.' . $ext;
-                $upload_path = 'public/images/';
-                $image_url = $upload_path . $image_full_name;
-                $file->move($upload_path, $image_full_name);
-                images::insert([
-                    'image' => $image_url,
-                    'product_id' => $id,
-                ]);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:95',
+            'name' => 'required|max:255',
+            'price' => 'required',
+            'description' => 'required|max:255',
+            'category' => 'required',
+            'cloth' => 'required',
+            'color' => 'required',
+            'brand' => 'required',
+            'size' => 'required',
+            'material' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return back()->with('error', 'All field must be filled in, post is not updated.');
+        } else {
+            $products = products::where('id', $id)->get();
+            foreach ($products as $product) {
+                $product->title = $request->post('title');
+                $product->name = $request->post('name');
+                $product->slug = Str::slug($product->title);
+                $product->description = $request->post('description');
+                $product->price = $request->post('price');
+                $product->user_id = Auth::id();
+                $product->category_id = $request->post('category');
+                $product->cloth_id = $request->post('cloth');
+                $product->color_id = $request->post('color');
+                $product->brand_id = $request->post('brand');
+                $product->size_id = $request->post('size');
+                $product->material_id = $request->post('material');
+                $product->views = 0;
+                $product->status_id = 1;
+                $product->save();
             }
+            if ($files = $request->file('image')) {
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1000, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name . '.' . $ext;
+                    $upload_path = 'public/images/';
+                    $image_url = $upload_path . $image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    images::insert([
+                        'image' => $image_url,
+                        'product_id' => $id,
+                    ]);
+                }
+            }
+            return back()->with('success', 'Post Updated');
         }
-        return back()->with('success', 'Post Updated');
     }
 
     /**
@@ -231,7 +265,6 @@ class ProductsController extends Controller
         $data['products'] = products::all();
         $data['images'] = images::all();
         return view('user.favourite', $data);
-
     }
 
     public function usersProducts($id)
@@ -258,5 +291,13 @@ class ProductsController extends Controller
         $data['images'] = images::all();
         $data['products'] = products::where('user_id', $id)->where('status_id', 1)->paginate(12);
         return view('product.userListing', $data);
+    }
+
+    public function myProducts()
+    {
+        $id = Auth::id();
+        $data['products'] = products::where('user_id', $id)->paginate(12);
+        $data['images'] = images::all();
+        return view('product.myProducts', $data);
     }
 }

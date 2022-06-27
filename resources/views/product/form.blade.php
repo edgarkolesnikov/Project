@@ -13,6 +13,13 @@
                             </ul>
                         </div>
                     @endif
+                    @if (\Session::has('error'))
+                        <div class="alert alert-danger">
+                            <ul>
+                                <li>{!! \Session::get('error') !!}</li>
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                         <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data">
                             @csrf

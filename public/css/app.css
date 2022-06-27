@@ -11385,4 +11385,8 @@ tr:hover {
 .starrating > input:hover ~ label
 { color: #ffca08 ;  } /* Set yellow color when star hover */
 
+.delete-button-right {
+    float: right;
+    margin: 5px;
+}
 

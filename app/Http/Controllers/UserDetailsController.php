@@ -9,6 +9,7 @@ use App\Models\user_details;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserDetailsController extends Controller
 {
@@ -42,13 +43,23 @@ class UserDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        $user_details = new user_details();
-        $user_details->user_id = Auth::id();
-        $user_details->last_name = $request->post('last_name');
-        $user_details->city_id = $request->post('city');
-        $user_details->address = $request->post('address');
-        $user_details->save();
-        return redirect('/');
+        $validator = Validator::make($request->all(), [
+            'last_name' => 'required|string|max:255',
+            'city' => 'required',
+            'address' => 'required|string|max:255',
+
+        ]);
+        if ($validator->fails()) {
+            return back()->with('error', 'All field must be filled.');
+        } else {
+            $user_details = new user_details();
+            $user_details->user_id = Auth::id();
+            $user_details->last_name = $request->post('last_name');
+            $user_details->city_id = $request->post('city');
+            $user_details->address = $request->post('address');
+            $user_details->save();
+            return redirect('/');
+        }
     }
 
     /**
@@ -85,20 +96,30 @@ class UserDetailsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user_details = user_details::where('user_id', $id)->get();
-        foreach ($user_details as $user_detail) {
-            $user_detail->last_name = $request->post('last_name');
-            $user_detail->city_id = $request->post('city');
-            $user_detail->address = $request->post('address');
-            $user_detail->save();
-        }
-        $request->validate([
-            'name' => 'required|min:4|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'city' => 'required',
+            'address' => 'required',
         ]);
-        $user = Auth::user();
-        $user->name = $request->post('name');
-        $user->save();
-        return back()->with('success', 'Profile Updated');
+        if ($validator->fails()) {
+            return back()->with('error', 'All field must be filled in');
+        } else {
+            $user_details = user_details::where('user_id', $id)->get();
+            foreach ($user_details as $user_detail) {
+                $user_detail->last_name = $request->post('last_name');
+                $user_detail->city_id = $request->post('city');
+                $user_detail->address = $request->post('address');
+                $user_detail->save();
+            }
+            $request->validate([
+                'name' => 'required|min:4|string|max:255',
+            ]);
+            $user = Auth::user();
+            $user->name = $request->post('name');
+            $user->save();
+            return back()->with('success', 'Profile Updated');
+        }
     }
 
     /**

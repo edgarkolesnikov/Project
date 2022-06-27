@@ -16,6 +16,13 @@
                                 </ul>
                             </div>
                         @endif
+                            @if (\Session::has('error'))
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        <li>{!! \Session::get('error') !!}</li>
+                                    </ul>
+                                </div>
+                            @endif
                         <form method="POST" action="{{ route('userDetails.update', $user->id) }}">
                             @csrf
                             @method('PUT')
