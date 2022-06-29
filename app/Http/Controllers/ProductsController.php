@@ -30,7 +30,7 @@ class ProductsController extends Controller
     public function index()
     {
         $data['images'] = Images::all();
-        $data['products'] = Products::paginate(12);
+        $data['products'] = Products::where('status_id', 1)->paginate(12);
         return view('product.list', $data);
     }
 
@@ -120,7 +120,7 @@ class ProductsController extends Controller
     public function show($id)
     {
         $userId = Auth::id();
-        $data['favoredProduct'] = Favourite_products::where('product_id', $id)->where('user_id', $userId)->get();
+        $data['favoredProduct'] = Favourite_products::where('product_id', $id)->where('user_id', $userId)->where('status_id', 1)->get();
         $data['comments'] = Comments::where('product_id', $id)->get();
         $data['images'] = Images::where('product_id', $id)->orderBy('id', 'desc')->get();
 
@@ -215,17 +215,6 @@ class ProductsController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Products $products
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(products $products)
-    {
-        //
-    }
-
     public function favouriteProduct($id)
     {
         $favourite = new Favourite_products();
@@ -245,15 +234,15 @@ class ProductsController extends Controller
 
     public function popularProducts()
     {
-        $data['products'] = Products::orderBy('views', 'desc')->paginate(15)->all();
         $data['images'] = Images::all();
+        $data['products'] = Products::where('status_id', 1)->orderBy('views', 'desc')->paginate(12);
         return view('product.popular', $data);
     }
 
     public function newestProducts()
     {
-        $data['products'] = Products::orderBy('id', 'desc')->paginate(15)->all();
         $data['images'] = Images::all();
+        $data['products'] = Products::where('status_id', 1)->orderBy('id', 'desc')->paginate(12);
         return view('product.newest', $data);
     }
 
@@ -261,7 +250,10 @@ class ProductsController extends Controller
     {
         $userId = Auth::id();
         $data['favourites'] = Favourite_products::where('user_id', $userId)->get();
-        $data['products'] = Products::all();
+        if($data['favourites']->isEmpty()){
+            return Redirect('/');
+        }
+        $data['products'] = Products::where('status_id', 1)->get();
         $data['images'] = Images::all();
         return view('user.favourite', $data);
     }
@@ -295,7 +287,7 @@ class ProductsController extends Controller
     public function myProducts()
     {
         $id = Auth::id();
-        $data['products'] = Products::where('user_id', $id)->paginate(12);
+        $data['products'] = Products::where('user_id', $id)->where('status_id', 1)->paginate(12);
         $data['images'] = Images::all();
         return view('product.myProducts', $data);
     }

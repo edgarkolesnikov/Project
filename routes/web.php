@@ -48,6 +48,19 @@ Route::get('admin/products/list', [App\Http\Controllers\AdminController::class, 
 Route::post('admin/products', [App\Http\Controllers\AdminController::class, 'productDelete'])->name('admin.productDelete');
 Route::post('admin/userRole', [App\Http\Controllers\AdminController::class, 'userRoleUpdate'])->name('admin.userRoleUpdate');
 Route::get('admin/comments', [App\Http\Controllers\AdminController::class, 'userComments'])->name('admin.comments');
+Route::get('admin/atributes', [App\Http\Controllers\AdminController::class, 'atributes'])->name('admin.atributes');
+Route::post('admin/delete/category', [App\Http\Controllers\AdminController::class, 'deleteCategory'])->name('admin.deleteCategory');
+Route::post('admin/add/category', [App\Http\Controllers\AdminController::class, 'addCategory'])->name('admin.addCategory');
+Route::post('admin/delete/brand', [App\Http\Controllers\AdminController::class, 'deleteBrand'])->name('admin.deleteBrand');
+Route::post('admin/add/brand', [App\Http\Controllers\AdminController::class, 'addBrand'])->name('admin.addBrand');
+Route::post('admin/delete/clothes', [App\Http\Controllers\AdminController::class, 'deleteCloth'])->name('admin.deleteCloth');
+Route::post('admin/add/clothes', [App\Http\Controllers\AdminController::class, 'addCloth'])->name('admin.addCloth');
+Route::post('admin/delete/size', [App\Http\Controllers\AdminController::class, 'deleteSize'])->name('admin.deleteSize');
+Route::post('admin/add/size', [App\Http\Controllers\AdminController::class, 'addSize'])->name('admin.addSize');
+Route::post('admin/delete/color', [App\Http\Controllers\AdminController::class, 'deleteColor'])->name('admin.deleteColor');
+Route::post('admin/add/color', [App\Http\Controllers\AdminController::class, 'addColor'])->name('admin.addColor');
+Route::post('admin/delete/material', [App\Http\Controllers\AdminController::class, 'deleteMaterial'])->name('admin.deleteMaterial');
+Route::post('admin/add/material', [App\Http\Controllers\AdminController::class, 'addMaterial'])->name('admin.addMaterial');
 
 Route::resource('product', 'App\Http\Controllers\ProductsController');
 Route::resource('user', 'App\Http\Controllers\UserDetailsController');

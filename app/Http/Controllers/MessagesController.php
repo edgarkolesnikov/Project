@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class MessagesController extends Controller
 {
@@ -18,18 +19,18 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        $userId= Auth::id();
+        $userId = Auth::id();
         $messagesData = Messages::where('sender_id', $userId)->orWhere('receiver_id', $userId)->get();
         $messages = [];
-        foreach($messagesData as $message) {
-            if($message->sender_id != $userId){
-                $key = $message->sender_id ;
-            }else{
+        foreach ($messagesData as $message) {
+            if ($message->sender_id != $userId) {
+                $key = $message->sender_id;
+            } else {
                 $key = $message->receiver_id;
             }
             $messages[$key] = $message;
         }
-        return view('messages.inbox', ['messages' =>$messages]);
+        return view('messages.inbox', ['messages' => $messages]);
     }
 
     /**
@@ -46,65 +47,26 @@ class MessagesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-
-        $message = new Messages();
-        $message->sender_id = Auth::id();
-        $message->receiver_id = $request->receiver_id;
-        $message->content = $request->post('message');
-        $message->status = 1;
-        $message->created_at = now();
-        $message->save();
-        return back()->with('success', 'Message sent');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Messages  $messages
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Messages $messages)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Messages  $messages
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Messages $messages)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Messages  $messages
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Messages $messages)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Messages  $messages
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Messages $messages)
-    {
-        //
+        $validator = Validator::make($request->all(), [
+            'message' => 'required|string|max:255',
+        ]);
+        if ($validator->fails()) {
+            return back()->with('error', 'Message did not send');
+        } else {
+            $message = new Messages();
+            $message->sender_id = Auth::id();
+            $message->receiver_id = $request->receiver_id;
+            $message->content = $request->post('message');
+            $message->status = 1;
+            $message->created_at = now();
+            $message->save();
+            return back()->with('success', 'Message sent');
+        }
     }
 
     public function read($chatFriendId)
@@ -119,7 +81,7 @@ class MessagesController extends Controller
         $unreadMessages = Messages::where('receiver_id', $userId)
             ->where('status', 1)
             ->get();
-        foreach ($unreadMessages as $msg){
+        foreach ($unreadMessages as $msg) {
             $msg->status = 0;
             $msg->save();
         }

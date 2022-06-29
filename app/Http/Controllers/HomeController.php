@@ -25,8 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['popularProducts'] = Products::orderBy('views', 'desc')->take(4)->get();
-        $data['newProducts'] = Products::orderBy('id', 'desc')->take(4)->get();
+        $data['popularProducts'] = Products::orderBy('views', 'desc')->take(3)->get();
+        $data['newProducts'] = Products::orderBy('id', 'desc')->take(3)->get();
         $data['images'] = Images::all();
         return view('Home', $data);
     }

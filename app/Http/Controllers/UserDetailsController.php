@@ -6,7 +6,6 @@ use App\Models\Cities;
 use App\Models\Products;
 use App\Models\Ratings;
 use App\Models\User_details;
-use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -63,17 +62,6 @@ class UserDetailsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\User_details $user_details
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User_details $user_details)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\User_details $user_details
@@ -122,24 +110,13 @@ class UserDetailsController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\User_details $user_details
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(user_details $user_details)
-    {
-        //
-    }
-
     public function userProfile($id)
     {
         $data['sold'] = Products::where('user_id', $id)->where('status_id', '2')->count();
         $data['currently_selling'] = Products::where('user_id', $id)->where('status_id', '1')->count();
         $rating = Ratings::where('user_id', $id)->pluck('grade')->avg();
         $data['rating'] = Round($rating, 2);
-        $data['reviews'] = Ratings::where('user_id', $id) ->get();
+        $data['reviews'] = Ratings::where('user_id', $id)->get();
         $data['user'] = \App\Models\User::find($id);
         $data['userDetails'] = User_details::where('user_id', $id)->get();
         $data['userRatings'] = Ratings::where('user_id', $id)->get();

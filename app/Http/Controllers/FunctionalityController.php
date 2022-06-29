@@ -17,15 +17,15 @@ class FunctionalityController extends Controller
     public function search(Request $request)
     {
         $search = $request->get('search');
-        if($search === null){
+        if ($search === null) {
             return Redirect::back();
         }
-        $products = Products::where('title', 'LIKE', '%'. $search . '%')->
-        orwhere('name', 'LIKE', '%'. $search . '%')->
-        orwhere('description', 'LIKE', '%'. $search . '%')->
-        orwhere('price', '<=', $search )->get();
+        $products = Products::where('status_id', 1)->where('title', 'LIKE', '%' . $search . '%')->
+        orwhere('name', 'LIKE', '%' . $search . '%')->
+        orwhere('description', 'LIKE', '%' . $search . '%')->
+        orwhere('price', '<=', $search)->get();
         $images = [];
-        foreach($products as $product){
+        foreach ($products as $product) {
             $photos = Images::where('product_id', $product->id)->first();
             $photo = explode('|', $photos->image);
             $images[] = [
@@ -58,7 +58,7 @@ class FunctionalityController extends Controller
         ]);
 
         #Match The Old Password
-        if(!Hash::check($request->old_password, Auth::user()->password)){
+        if (!Hash::check($request->old_password, Auth::user()->password)) {
             return back()->with("error", "Old Password Doesn't match!");
         }
 
@@ -72,33 +72,31 @@ class FunctionalityController extends Controller
 
     public function filteredProducts(Request $request)
     {
-        $array = [
-            'category_id' => $request->get('category_id'),
-            'cloth_id' => $request->get('cloth_id'),
-            'size_id' => $request->get('size_id'),
-            'color_id' => $request->get('color_id'),
-        ];
+        $data = Products::query();
+        if ($request->has('category_id')) {
+            $data = $data->where('status_id', 1)->where('category_id', $request->get('category_id'));
+        }
+        if ($request->has('cloth_id')) {
+            $data = $data->where('status_id', 1)->where('cloth_id', $request->get('cloth_id'));
+        }
+        if ($request->has('size_id')) {
+            $data = $data->where('status_id', 1)->where('size_id', $request->get('size_id'));
+        }
+        if ($request->has('color_id')) {
+            $data = $data->where('status_id', 1)->where('color_id', $request->get('color_id'));
+        }
 
-        $collection = array_filter($array);
-        foreach ($collection as $key => $atribute) {
-            if($atribute == null){
-                $data['products'] = Products::select($key)->get();
-            }else {
-                $data['products'] = Products::where($key, $atribute)->get();
-            }
-        }
-        if(empty($data['products'])){
-            return redirect()->route('home');
-        }
-        $data['images'] = Images::all();
-        return view('search.filteredProducts', $data);
+        $data = $data->get();
+        $images = Images::all();
+
+        return view('search.filteredProducts', ['products' => $data, 'images' => $images]);
     }
 
     public function rateUserForm($id)
     {
         $rating = Ratings::where('user_id', $id)->where('estimator_id', Auth::id())->get();
-        if(!$rating->isEmpty()){
-            return Redirect('user/profile/'.$id);
+        if (!$rating->isEmpty()) {
+            return Redirect('user/profile/' . $id);
         }
 
         $data['userRatings'] = Ratings::where('user_id', $id)->get();
@@ -114,7 +112,7 @@ class FunctionalityController extends Controller
         $rate->grade = $request->post('rating');
         $rate->review = $request->post('review');
         $rate->save();
-        return Redirect('user/profile/'.$request->post('user_id'));
+        return Redirect('user/profile/' . $request->post('user_id'));
     }
 }
 

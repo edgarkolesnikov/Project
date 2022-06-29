@@ -11392,3 +11392,15 @@ tr:hover {
     margin: 5px;
 }
 
+.card-img, .card-img-top, .card-img-bottom {
+    height:370px;
+    width:100%;
+    -o-object-fit: scale-down;
+       object-fit: scale-down;
+}
+
+.logo{
+    height: 35px;
+    width: 100px;
+}
+
