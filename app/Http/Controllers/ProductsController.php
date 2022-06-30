@@ -12,10 +12,9 @@ use App\Models\Images;
 use App\Models\Materials;
 use App\Models\Products;
 use App\Models\Sizes;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -105,11 +104,18 @@ class ProductsController extends Controller
                         'product_id' => $id,
                     ]);
                 }
+            } else {
+                $oldPath = 'images/999default.jpeg';
+                $newPath = 'images/' . md5(rand(1, 10020)). '999default' . rand(78, 9889) . '.jpeg';
+                File::copy($oldPath, $newPath);
+                Images::insert([
+                    'image' => $newPath,
+                    'product_id' => $id
+                ]);
             }
             return back()->with('success', 'Post created');
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -120,11 +126,11 @@ class ProductsController extends Controller
     public function show($id)
     {
         $userId = Auth::id();
-        $data['favoredProduct'] = Favourite_products::where('product_id', $id)->where('user_id', $userId)->where('status_id', 1)->get();
+        $data['favoredProduct'] = Favourite_products::where('product_id', $id)->where('user_id', $userId)->get();
         $data['comments'] = Comments::where('product_id', $id)->get();
         $data['images'] = Images::where('product_id', $id)->orderBy('id', 'desc')->get();
 
-        $product = Products::where('id', $id)->get();
+        $product = Products::where('id', $id)->where('status_id', 1)->get();
         foreach ($product as $item) {
             $item->views += 1;
             $data['product'] = $item;
@@ -166,9 +172,9 @@ class ProductsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:95',
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255',
             'price' => 'required',
-            'description' => 'required|max:255',
+            'description' => 'required|string|max:255',
             'category' => 'required',
             'cloth' => 'required',
             'color' => 'required',
@@ -202,7 +208,7 @@ class ProductsController extends Controller
                     $image_name = md5(rand(1000, 10000));
                     $ext = strtolower($file->getClientOriginalExtension());
                     $image_full_name = $image_name . '.' . $ext;
-                    $upload_path = 'public/images/';
+                    $upload_path = 'images/';
                     $image_url = $upload_path . $image_full_name;
                     $file->move($upload_path, $image_full_name);
                     Images::insert([
@@ -250,7 +256,7 @@ class ProductsController extends Controller
     {
         $userId = Auth::id();
         $data['favourites'] = Favourite_products::where('user_id', $userId)->get();
-        if($data['favourites']->isEmpty()){
+        if ($data['favourites']->isEmpty()) {
             return Redirect('/');
         }
         $data['products'] = Products::where('status_id', 1)->get();

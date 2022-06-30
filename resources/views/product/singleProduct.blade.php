@@ -13,7 +13,7 @@
                         @foreach($images as $image)
                             <div class="col-sm-6 col-md-4 col-lg-3 item">
                                 <a href="{{URL::to($image->image)}}" data-lightbox="photos">
-                                    <img class="img-fluid" src="{{URL::to($image->image)}}">
+                                    <img class="card-img-top" src="{{URL::to($image->image)}}">
                                 </a>
                             </div>
                         @endforeach
@@ -27,10 +27,10 @@
                         <li>{{$product->brand->name}}</li>
                         <li>{{$product->size->name}}</li>
                         <li>{{$product->material->name}}</li>
-                        <li>€{{$product->price}}</li>
+                        <li><h2 style="color:green">€{{$product->price}}</h2></li>
                     </ul>
                     </div>
-                    <div class="col">
+                    <div class="col" style="background: whitesmoke">
                         <h3>{{$product->description}}</h3>
                     </div>
                     </div>

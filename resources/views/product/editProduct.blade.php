@@ -165,26 +165,29 @@
 
                             <div class="row mb-6">
                                 <div class="col-md-6 offset-md-4 text-md-end">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-success">
                                         {{ __('Publish') }}
                                     </button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    @foreach($images as $image)
-                        <div class="grid">
-                            <div class="inner-card">
+                    <div class="row photos">
+
+                        @foreach($images as $image)
+                            <div class="col-sm-6 col-md-4 col-lg-3">
                                 <form method="POST" action="{{route('deleteImage', $image->id)}}">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{$image->id}}">
                                     <img src="{{URL::to($image->image)}}" class="card-img-top">
-                                    <input type="submit" value="delete" class="btn btn-primary">
+                                    <div class="edit-button-center">
+                                    <input type="submit" value="delete" class="btn btn-danger">
+                                    </div>
                                 </form>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

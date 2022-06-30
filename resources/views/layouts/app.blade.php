@@ -50,28 +50,28 @@
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <form method="GET" action="{{route('filtered.products')}}">
                                 @csrf
-                                <select name="category_id">
+                                <select name="category_id" class="form-control">
                                     <option value="" selected disabled> Select Category</option>
                                     @foreach($categories as $category)
                                         <option value="{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                 </select>
 
-                                <select name="cloth_id">
+                                <select name="cloth_id" class="form-control">
                                     <option value="" selected disabled> Select Cloth</option>
                                     @foreach($clothes as $cloth)
                                         <option value="{{$cloth->id}}">{{$cloth->name}}</option>
                                     @endforeach
                                 </select>
 
-                                <select name="size_id">
+                                <select name="size_id" class="form-control">
                                     <option value="" selected disabled> Select size</option>
                                     @foreach($sizes as $size)
                                         <option value="{{$size->id}}">{{$size->name}}</option>
                                     @endforeach
                                 </select>
 
-                                <select name="color_id">
+                                <select name="color_id" class="form-control">
                                     <option value="" selected disabled> Select color</option>
                                     @foreach($colors as $color)
                                         <option value="{{$color->id}}">{{$color->name}}</option>

@@ -115,3 +115,8 @@ tr:hover {
     height: 35px;
     width: 100px;
 }
+.edit-button-center{
+    margin: 10px;
+    text-align: center;
+}
+

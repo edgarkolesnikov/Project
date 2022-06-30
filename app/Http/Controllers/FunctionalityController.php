@@ -9,8 +9,10 @@ use App\Models\Ratings;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class FunctionalityController extends Controller
 {
@@ -40,7 +42,23 @@ class FunctionalityController extends Controller
 
     public function deleteImage($id)
     {
-        Images::where('id', $id)->delete();
+        $img = Images::find($id);
+        $product_id = $img->product_id;
+        if ($img->id != 1) {
+            @unlink($img->image);
+        }
+        $img->delete();
+
+        $images = Images::where('product_id', $product_id)->get();
+        if($images->isEmpty()){
+            $oldPath = 'images/999default.jpeg';
+            $newPath = 'images/' . md5(rand(1, 10020)). '999default' . rand(78, 9889) . '.jpeg';
+            File::copy($oldPath, $newPath);
+            Images::insert([
+                'image' => $newPath,
+                'product_id' => $product_id
+            ]);
+        }
         return Redirect::back();
     }
 

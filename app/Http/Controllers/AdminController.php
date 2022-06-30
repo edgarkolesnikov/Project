@@ -7,12 +7,12 @@ use App\Models\categories;
 use App\Models\clothes;
 use App\Models\colors;
 use App\Models\Comments;
+use App\Models\images;
 use App\Models\materials;
 use App\Models\Products;
 use App\Models\Roles;
 use App\Models\sizes;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -20,11 +20,19 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if(Auth::user()->role_id !=2){
+                return redirect('/');
+            } ;
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
-        if (Auth::user()->role_id != '2') {
-            return redirect('/');
-        }
         $data['roles'] = Roles::all();
         $data['users'] = User::all();
         return view('admin.home', $data);
@@ -32,9 +40,6 @@ class AdminController extends Controller
 
     public function products()
     {
-        if (Auth::user()->role_id != '2') {
-            return redirect('/');
-        }
         $data['products'] = Products::all();
         return view('admin.productList', $data);
     }
@@ -45,6 +50,12 @@ class AdminController extends Controller
         if ($productsIds != null) {
             foreach ($productsIds as $productId) {
                 $product = Products::find($productId);
+                $images = Images::where('product_id', $productId)->get();
+                foreach($images as $img) {
+                    if ($img->id != 1) {
+                        @unlink($img->image);
+                    }
+                }
                 $product->delete();
             }
         }
