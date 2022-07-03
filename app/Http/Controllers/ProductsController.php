@@ -272,6 +272,7 @@ class ProductsController extends Controller
 
     public function deactivate(Request $request)
     {
+        #changing product status, makes products not visible to users and counts as 'sold product'
         $productsIds = $request->post('check');
         if ($productsIds != null) {
             foreach ($productsIds as $productId) {
@@ -285,6 +286,7 @@ class ProductsController extends Controller
 
     public function userListing($id)
     {
+        #show another users uploaded products
         $data['images'] = Images::all();
         $data['products'] = Products::where('user_id', $id)->where('status_id', 1)->paginate(12);
         return view('product.userListing', $data);
@@ -292,6 +294,7 @@ class ProductsController extends Controller
 
     public function myProducts()
     {
+        #show users only uploaded products
         $id = Auth::id();
         $data['products'] = Products::where('user_id', $id)->where('status_id', 1)->paginate(12);
         $data['images'] = Images::all();

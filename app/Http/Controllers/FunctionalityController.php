@@ -42,6 +42,7 @@ class FunctionalityController extends Controller
 
     public function deleteImage($id)
     {
+        #Deleting only users uploaded images - Default image stays in folder.
         $img = Images::find($id);
         $product_id = $img->product_id;
         if ($img->id != 1) {
@@ -49,6 +50,7 @@ class FunctionalityController extends Controller
         }
         $img->delete();
 
+        #If user deletes last picture of the product we define that product default server image.
         $images = Images::where('product_id', $product_id)->get();
         if($images->isEmpty()){
             $oldPath = 'images/999default.jpeg';
@@ -133,5 +135,3 @@ class FunctionalityController extends Controller
         return Redirect('user/profile/' . $request->post('user_id'));
     }
 }
-
-

@@ -22,6 +22,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
+        #checking authentication of admin role
         $this->middleware(function ($request, $next) {
             if(Auth::user()->role_id !=2){
                 return redirect('/');
@@ -46,6 +47,7 @@ class AdminController extends Controller
 
     public function productDelete(Request $request)
     {
+        #product deletion from DB, image deletion from image storage folder.
         $productsIds = $request->post('check');
         if ($productsIds != null) {
             foreach ($productsIds as $productId) {
