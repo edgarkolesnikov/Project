@@ -14,3 +14,4 @@ yarn-error.log
 /.vscode
 adminer.php
 /public/images
+/images

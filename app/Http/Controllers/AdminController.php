@@ -24,9 +24,9 @@ class AdminController extends Controller
     {
         #checking authentication of admin role
         $this->middleware(function ($request, $next) {
-            if(Auth::user()->role_id !=2){
+            if (Auth::user()->role_id != 2) {
                 return redirect('/');
-            } ;
+            };
 
             return $next($request);
         });
@@ -53,7 +53,7 @@ class AdminController extends Controller
             foreach ($productsIds as $productId) {
                 $product = Products::find($productId);
                 $images = Images::where('product_id', $productId)->get();
-                foreach($images as $img) {
+                foreach ($images as $img) {
                     if ($img->id != 1) {
                         @unlink($img->image);
                     }
@@ -66,6 +66,7 @@ class AdminController extends Controller
 
     public function userRoleUpdate(Request $request)
     {
+        #Changing user role from admin panel
         $userId = $request->post('user_id');
         $role = $request->post('role');
         $count = count($userId);
@@ -101,12 +102,12 @@ class AdminController extends Controller
 
     public function deleteCategory(Request $request)
     {
-        if($request->post('category') == null){
+        if ($request->post('category') == null) {
             return back();
         }
         $productsWithThisId = products::where('category_id', $request->post('category'))->get();
 
-        if ($productsWithThisId->isEmpty()){
+        if ($productsWithThisId->isEmpty()) {
             $category = Categories::find($request->post('category'));
             $category->delete();
             return back()->with('success', 'Atribute Deleted');
@@ -133,7 +134,7 @@ class AdminController extends Controller
 
     public function deleteBrand(Request $request)
     {
-        if($request->post('brand') == null){
+        if ($request->post('brand') == null) {
             return back();
         }
         $productsWithThisId = products::where('brand_id', $request->post('brand'))->get();
@@ -164,7 +165,7 @@ class AdminController extends Controller
 
     public function deleteCloth(Request $request)
     {
-        if($request->post('cloth') == null){
+        if ($request->post('cloth') == null) {
             return back();
         }
         $productsWithThisId = products::where('cloth_id', $request->post('cloth'))->get();
@@ -195,7 +196,7 @@ class AdminController extends Controller
 
     public function deleteSize(Request $request)
     {
-        if($request->post('size') == null){
+        if ($request->post('size') == null) {
             return back();
         }
         $productsWithThisId = products::where('size_id', $request->post('size'))->get();
@@ -227,7 +228,7 @@ class AdminController extends Controller
 
     public function deleteColor(Request $request)
     {
-        if($request->post('color') == null){
+        if ($request->post('color') == null) {
             return back();
         }
         $productsWithThisId = products::where('color_id', $request->post('color'))->get();
@@ -259,7 +260,7 @@ class AdminController extends Controller
 
     public function deleteMaterial(Request $request)
     {
-        if($request->post('material') == null){
+        if ($request->post('material') == null) {
             return back();
         }
         $productsWithThisId = products::where('material_id', $request->post('material'))->get();

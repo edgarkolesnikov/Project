@@ -26,6 +26,7 @@
                                     <input type="text" name="title" class="form-control" value="{{$product->title}}">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
@@ -33,6 +34,7 @@
                                     <input type="text" name="name" class="form-control" value="{{$product->name}}">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Categories') }}</label>
@@ -50,6 +52,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Brand') }}</label>
@@ -65,6 +68,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Clothes') }}</label>
@@ -80,6 +84,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Size') }}</label>
@@ -146,6 +151,7 @@
                                               maxlength="255">{{$product->description}}</textarea>
                                 </div>
                             </div>
+
                             <div class="row mb-6">
                                 <label for="category"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Images') }}</label>
@@ -172,8 +178,8 @@
                             </div>
                         </form>
                     </div>
-                    <div class="row photos">
 
+                    <div class="row photos">
                         @foreach($images as $image)
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <form method="POST" action="{{route('deleteImage', $image->id)}}">
@@ -182,12 +188,13 @@
                                     <input type="hidden" value="{{$image->id}}">
                                     <img src="{{URL::to($image->image)}}" class="card-img-top">
                                     <div class="edit-button-center">
-                                    <input type="submit" value="delete" class="btn btn-danger">
+                                        <input type="submit" value="delete" class="btn btn-danger">
                                     </div>
                                 </form>
                             </div>
                         @endforeach
                     </div>
+
                 </div>
             </div>
         </div>

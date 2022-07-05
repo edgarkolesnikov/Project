@@ -76,6 +76,7 @@
             </div>
         </div>
     </div>
+
     <div class="row d-flex justify-content-center mt-100 mb-100">
         <div class="col-lg-6">
             <div class="card-body text-center">
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+
     <div class="row d-flex justify-content-center mt-100 mb-100">
         <div class="col-lg-6">
             <div class="card-body text-center">

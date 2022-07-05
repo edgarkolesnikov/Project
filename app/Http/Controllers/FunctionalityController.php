@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 
 class FunctionalityController extends Controller
 {
@@ -92,6 +91,7 @@ class FunctionalityController extends Controller
 
     public function filteredProducts(Request $request)
     {
+        #catching products by building query with provided filters.
         $data = Products::query();
         if ($request->has('category_id')) {
             $data = $data->where('status_id', 1)->where('category_id', $request->get('category_id'));

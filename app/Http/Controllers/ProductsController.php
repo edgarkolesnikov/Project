@@ -40,12 +40,12 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $data['categories'] = Categories::all();
-        $data['clothes'] = Clothes::all();
-        $data['colors'] = Colors::all();
-        $data['brands'] = Brands::all();
-        $data['sizes'] = Sizes::all();
-        $data['materials'] = Materials::all();
+        $data['categories'] = Categories::all()->sortBy('name');
+        $data['clothes'] = Clothes::all()->sortBy('name');
+        $data['colors'] = Colors::all()->sortBy('name');
+        $data['brands'] = Brands::all()->sortBy('name');
+        $data['sizes'] = Sizes::all()->sortBy('name');
+        $data['materials'] = Materials::all()->sortBy('name');
         return view('product.form', $data);
     }
 
@@ -113,6 +113,7 @@ class ProductsController extends Controller
                     'product_id' => $id
                 ]);
             }
+
             return back()->with('success', 'Post created');
         }
     }
